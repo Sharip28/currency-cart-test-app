@@ -42,17 +42,17 @@ const Price = ({price, prevMoneyType}:any) => {
 
     }, [price, prevAmount, prevMoney]);
     return (
-        <div className={ ` font-semibold flex justify-center align-middle py-2 ${style}`} >
+        <div className={ ` font-semibold flex justify-center align-middle py-2 ${style} transition duration-300 ease-linear`} >
 
             {arrow === "up" ? (
-                <ArrowUpwardIcon />
+                <ArrowUpwardIcon className="animate-pulse" />
             ) : arrow === "down" ? (
-                <ArrowDownwardIcon />
+                <ArrowDownwardIcon className="animate-pulse"/>
                 ) : (
                     <></>
                 )
             }
-            <div>
+            <div className=" ease-linear transition duration-300" >
                 { moneyType ? `$${Math.floor(price)}` : `${Math.floor(price)}c.`}
             </div>
         </div>
