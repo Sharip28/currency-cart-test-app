@@ -3,10 +3,21 @@ import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../../store";
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
-import {countTotalSum, decrementQuantity,  incrementQuantity, removeItem} from "../../store/cartSlice";
+import {
+    countTotalSum,
+    decrementQuantity, decrementQuantityByOne,
+    incrementQuantity,
+    incrementQuantityByOne,
+    removeItem
+} from "../../store/cartSlice";
 import ClearIcon from '@mui/icons-material/Clear';
 import * as React from "react";
-import {increaseGoodAmount, reduceGoodAmount} from "../../store/mainSlice";
+import {
+    increaseGoodAmount,
+    increaseGoodAmountByOne,
+    reduceGoodAmount,
+    reduceGoodAmountByOne
+} from "../../store/mainSlice";
 import Price from "../components/price";
 import {addednot, removenot} from "../../utils/notifications";
 import {ToastContainer} from "react-toastify";
@@ -21,29 +32,26 @@ const Cart = () => {
     const handleIncrement = (good:any) => {
         let price = good.itemData.C
         if (good.itemData.P !== 0) {
-            dispatch(reduceGoodAmount(good));
-            dispatch(incrementQuantity(good));
+            dispatch(reduceGoodAmountByOne(good));
+            dispatch(incrementQuantityByOne(good));
             dispatch(countTotalSum( price));
-            addednot();
         }
     };
     const handleDecrement = (good:any) => {
         let price = good.itemData.C
             if (good.quantity !== 1) {
                 dispatch(countTotalSum(-price));
-                dispatch(increaseGoodAmount(good));
-                dispatch(decrementQuantity(good.item[0]));
-                removenot();
+                dispatch(increaseGoodAmountByOne(good));
+                dispatch(decrementQuantityByOne(good.item[0]));
             }
     };
 
     const handleRemove = (good:any) => {
         let price = good.itemData.C
         dispatch(removeItem(good.item[0]));
-            dispatch(countTotalSum(-(good.quantity * price)));
-            removenot();
+        dispatch(countTotalSum(-(good.quantity * price)));
         for (let i = 0; i < good.quantity; i++) {
-            dispatch(increaseGoodAmount(good));
+            dispatch(increaseGoodAmountByOne(good));
         }
     };
 

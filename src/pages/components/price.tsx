@@ -1,8 +1,9 @@
 import {useEffect, useRef, useState} from "react";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../../store";
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
+import {handleArrow} from "../../store/mainSlice";
 function usePrevious(value: any) {
     const ref:any = useRef();
     useEffect(() => {
@@ -12,30 +13,30 @@ function usePrevious(value: any) {
 }
 
 const Price = ({price, prevMoneyType}:any) => {
+    const dispatch = useDispatch();
     const [style, setStyle] = useState<string>("text-black font-semibold");
     const moneyType = useSelector((state:RootState) => state.cart.moneyType);
     const prevAmount = usePrevious(price );
     const prevMoney = usePrevious(prevMoneyType);
-    const [arrow, setArrow] = useState<string>("");
+    const arrow = useSelector((state: RootState) => state.main.arrow);
 
     useEffect(() => {
-
         if (prevMoney === true ) {
             setStyle("text-black ");
-            setArrow("");
+            dispatch(handleArrow(""));
         }
         if (moneyType === true ) {
             setStyle("text-black ");
-            setArrow("");
+            dispatch(handleArrow(""));
         }
         if (prevMoney === false  && moneyType === false ) {
                 if ( prevAmount > price) {
+                    dispatch(handleArrow("down"));
                     setStyle("text-green-400 ");
-                    setArrow("down");
                 }
                 if (prevAmount < price) {
+                    dispatch(handleArrow("up"));
                     setStyle("text-red-500 ");
-                    setArrow("up");
                 }
                 return ;
             }
